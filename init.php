@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `cartorios` (
 	`telefone` INT(11),
 	`email` VARCHAR(255),
 	`tabeliao` VARCHAR(255),
-	`ativo` BOOLEAN(1),
+	`ativo` BOOLEAN,
 	PRIMARY KEY (`id`)
 );
 
