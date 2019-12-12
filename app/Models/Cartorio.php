@@ -3,29 +3,35 @@
 namespace App\Models;
 
 use App\DB;
+use PDO;
 
 class Cartorio
 {
-    /** * Busca usuários * * Se o ID não for passado, busca todos. Caso contrário, filtra pelo ID especificado. */
+    /**
+     * Busca cartórios *
+     * Se o ID não for passado, busca todos. Caso contrário, filtra pelo ID especificado.
+     */
     public static function selectAll($id = null)
     {
         $where = '';
         if (!empty($id)) {
             $where = 'WHERE id = :id';
         }
-        $sql = sprintf("SELECT id, name, email, gender, birthdate FROM users %s ORDER BY name ASC", $where);
+        $sql = sprintf("SELECT id, nome, razao, documento, cep, endereco, bairro, cidade, uf, telefone, email, tabeliao, ativo
+            FROM cartorios %s 
+            ORDER BY nome ASC", $where);
         $DB = new DB;
         $stmt = $DB->prepare($sql);
 
         if (!empty($where)) {
-            $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         }
 
         $stmt->execute();
 
-        $users = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        $cartorios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        return $users;
+        return $cartorios;
     }
 
 

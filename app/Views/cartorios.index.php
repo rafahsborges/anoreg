@@ -1,4 +1,4 @@
-<h1>Listagem de Usuários</h1>
+<h1>Listagem de Cartórios</h1>
 
 <a href="/add">Adicionar Usuário</a>
 

@@ -1,7 +1,9 @@
 <?php namespace App\Controllers;
 
-use \App\Models\Cartorio;
-use \App\View;
+use App\Models\Cartorio;
+use App\View;
+use Exception;
+use Slim\Http\UploadedFile;
 
 class CartoriosController
 {
@@ -13,6 +15,26 @@ class CartoriosController
         ]);
     }
 
+    /**
+     * Exibe o formulário de importação de xml
+     */
+    public function import()
+    {
+        View::make('cartorios.import');
+    }
+
+    /**
+     * Exibe o formulário de criação de usuário
+     */
+    public function storeXML($directory, $uploadedFiles)
+    {
+        // handle single input with single file upload
+        $uploadedFile = $uploadedFiles['xml'];
+        if ($uploadedFile->getError() === UPLOAD_ERR_OK) {
+            $filename = $this->moveUploadedFile($directory, $uploadedFile);
+        }
+        View::make('cartorios.import');
+    }
 
     /**
      * Exibe o formulário de criação de usuário
@@ -21,7 +43,6 @@ class CartoriosController
     {
         \App\View::make('users.create');
     }
-
 
     /**
      * Processa o formulário de criação de usuário
@@ -40,7 +61,6 @@ class CartoriosController
         }
     }
 
-
     /**
      * Exibe o formulário de edição de usuário
      */
@@ -52,7 +72,6 @@ class CartoriosController
             'user' => $user,
         ]);
     }
-
 
     /**
      * Processa o formulário de edição de usuário
@@ -72,7 +91,6 @@ class CartoriosController
         }
     }
 
-
     /**
      * Remove um usuário
      */
@@ -81,6 +99,41 @@ class CartoriosController
         if (Cartorio::remove($id)) {
             header('Location: /');
             exit;
+        }
+    }
+
+    /**
+     * Moves the uploaded file to the upload directory and assigns it a unique name
+     * to avoid overwriting an existing uploaded file.
+     *
+     * @param string $directory directory to which the file is moved
+     * @param UploadedFile $uploadedFile file uploaded file to move
+     * @return string filename of moved file
+     * @throws Exception
+     */
+    function moveUploadedFile($directory, UploadedFile $uploadedFile)
+    {
+        $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
+        $basename = bin2hex(random_bytes(8)); // see http://php.net/manual/en/function.random-bytes.php
+        $filename = sprintf('%s.%0.8s', $basename, $extension);
+
+        $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
+        $filePath = $directory . DIRECTORY_SEPARATOR . $filename;
+
+        $xmlImport = $this->xmlImport($filePath);
+
+        die();
+
+        return $filename;
+    }
+
+    function xmlImport($filePath) {
+        $affectedRow = 0;
+
+        $xml = simplexml_load_file($filePath) or die("Error: Cannot create object");
+
+        foreach ($xml->children() as $row) {
+            var_dump($row);
         }
     }
 }
