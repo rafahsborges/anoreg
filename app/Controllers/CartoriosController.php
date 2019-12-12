@@ -41,7 +41,7 @@ class CartoriosController
      */
     public function create()
     {
-        \App\View::make('users.create');
+        View::make('cartorios.create');
     }
 
     /**
@@ -66,10 +66,10 @@ class CartoriosController
      */
     public function edit($id)
     {
-        $user = Cartorio::selectAll($id)[0];
+        $cartorios = Cartorio::selectAll($id)[0];
 
-        \App\View::make('users.edit', [
-            'user' => $user,
+        View::make('cartorios.edit', [
+            'cartorios' => $cartorios,
         ]);
     }
 
@@ -86,17 +86,6 @@ class CartoriosController
         $birthdate = isset($_POST['birthdate']) ? $_POST['birthdate'] : null;
 
         if (Cartorio::update($id, $name, $email, $gender, $birthdate)) {
-            header('Location: /');
-            exit;
-        }
-    }
-
-    /**
-     * Remove um usuário
-     */
-    public function remove($id)
-    {
-        if (Cartorio::remove($id)) {
             header('Location: /');
             exit;
         }
@@ -122,9 +111,12 @@ class CartoriosController
 
         $xmlImport = $this->xmlDataStore($filePath);
 
-        die();
-
-        return $filename;
+        if ($xmlImport) {
+            header('Location: /');
+            exit;
+        } else {
+            return false;
+        }
     }
 
     function xmlDataStore($filePath)
@@ -148,10 +140,9 @@ class CartoriosController
         }
 
         if ($affectedRow > 0) {
-            header('Location: /');
-            exit;
+            return true;
         } else {
-            $message = "No records inserted";
+            return false;
         }
     }
 

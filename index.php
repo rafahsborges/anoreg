@@ -28,6 +28,40 @@ $app->get('/', function ()
     $CartoriosController->index();
 });
 
+// adição de cartório
+// exibe o formulário de cadastro
+$app->get('/adicionar', function ()
+{
+    $CartoriosController = new CartoriosController();
+    $CartoriosController->create();
+});
+
+// processa o formulário de cadastro
+$app->post('/adicionar', function ()
+{
+    $CartoriosController = new CartoriosController();
+    $CartoriosController->store();
+});
+
+
+// edição de cartório
+// exibe o formulário de edição
+$app->get('/editar/{id}', function ($request)
+{
+    // pega o ID da URL
+    $id = $request->getAttribute('id');
+
+    $CartoriosController = new CartoriosController();
+    $CartoriosController->edit($id);
+});
+
+// processa o formulário de edição
+$app->post('/editar', function ()
+{
+    $CartoriosController = new CartoriosController();
+    $CartoriosController->update();
+});
+
 // importação de xml
 // exibe o formulário de importação
 $app->get('/importar', function ()
@@ -36,6 +70,7 @@ $app->get('/importar', function ()
     $CartoriosController->import();
 });
 
+// processa o formulário de importação
 $app->post('/importar', function(Request $request)
 {
     $directory = $this->get('upload_directory');

@@ -50,10 +50,12 @@
     }
     ?>
 
+    <hr>
+
 </main>
 
 <footer class="container">
-    <p>&copy; Company 2017-2019</p>
+    <p>&copy; Anoreg <?php echo date('Y'); ?></p>
 </footer>
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"

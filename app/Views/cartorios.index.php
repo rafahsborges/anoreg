@@ -55,9 +55,7 @@
                                 <td><?php echo $cartorio['tabeliao']; ?></td>
                                 <td><?php echo $cartorio['ativo'] === '1' ? 'Sim' : 'Não'; ?></td>
                                 <td>
-                                    <a href="/edit/<?php echo $cartorio['id']; ?>">Editar</a>
-                                    <a href="/remove/<?php echo $cartorio['id']; ?>"
-                                       onclick="return confirm('Tem certeza de que deseja remover?');">Remover</a>
+                                    <a href="/editar/<?php echo $cartorio['id']; ?>">Editar</a>
                                 </td>
                             </tr>
 
@@ -77,8 +75,6 @@
 
         </div>
     </div>
-
-    <hr>
 
 </div> <!-- /container -->
 
