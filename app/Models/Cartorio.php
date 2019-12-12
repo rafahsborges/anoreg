@@ -17,7 +17,7 @@ class Cartorio
         if (!empty($id)) {
             $where = 'WHERE id = :id';
         }
-        $sql = sprintf("SELECT id, nome, razao, documento, cep, endereco, bairro, cidade, uf, telefone, email, tabeliao, ativo
+        $sql = sprintf("SELECT id, nome, razao, tipo_documento, documento, cep, endereco, bairro, cidade, uf, telefone, email, tabeliao, ativo
             FROM cartorios %s 
             ORDER BY nome ASC", $where);
         $DB = new DB;
@@ -34,30 +34,50 @@ class Cartorio
         return $cartorios;
     }
 
+    /**
+     * Busca cartórios por nome*
+     * Se o ID não for passado, busca todos. Caso contrário, filtra pelo ID especificado.
+     */
+    public static function getByDoc($documento)
+    {
+        $where = 'WHERE documento = :documento';
+        $sql = sprintf("SELECT id, nome, razao, tipo_documento, documento, cep, endereco, bairro, cidade, uf, telefone, email, tabeliao, ativo
+            FROM cartorios %s", $where);
+        $DB = new DB;
+        $stmt = $DB->prepare($sql);
+        $stmt->bindParam(':documento', $documento, PDO::PARAM_STR);
+        $stmt->execute();
+
+        $cartorios = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $cartorios;
+    }
 
     /**
-     * Salva no banco de dados um novo usuário
+     * Salva no banco de dados um novo cartório
+     * @param $cartorio
+     * @return bool
      */
-    public static function save($name, $email, $gender, $birthdate)
+    public static function save($cartorio)
     {
-        // validação (bem simples, só pra evitar dados vazios)
-        if (empty($name) || empty($email) || empty($gender) || empty($birthdate)) {
-            echo "Volte e preencha todos os campos";
-            return false;
-        }
-
-        // a data vem no formato dd/mm/YYYY
-        // então precisamos converter para YYYY-mm-dd
-        $isoDate = dateConvert($birthdate);
-
         // insere no banco
         $DB = new DB;
-        $sql = "INSERT INTO users(name, email, gender, birthdate) VALUES(:name, :email, :gender, :birthdate)";
+        $sql = "INSERT INTO cartorios(nome, razao, tipo_documento, documento, cep, endereco, bairro, cidade, uf, telefone, email, tabeliao, ativo)
+                VALUES(:nome, :razao, :tipo_documento, :documento, :cep, :endereco, :bairro, :cidade, :uf, :telefone, :email, :tabeliao, :ativo)";
         $stmt = $DB->prepare($sql);
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':gender', $gender);
-        $stmt->bindParam(':birthdate', $isoDate);
+        $stmt->bindParam(':nome', $cartorio->nome);
+        $stmt->bindParam(':razao', $cartorio->razao);
+        $stmt->bindParam(':tipo_documento', $cartorio->tipo_documento);
+        $stmt->bindParam(':documento', $cartorio->documento);
+        $stmt->bindParam(':cep', $cartorio->cep);
+        $stmt->bindParam(':endereco', $cartorio->endereco);
+        $stmt->bindParam(':bairro', $cartorio->bairro);
+        $stmt->bindParam(':cidade', $cartorio->cidade);
+        $stmt->bindParam(':uf', $cartorio->uf);
+        $stmt->bindParam(':telefone', $cartorio->telefone);
+        $stmt->bindParam(':email', $cartorio->email);
+        $stmt->bindParam(':tabeliao', $cartorio->tabeliao);
+        $stmt->bindParam(':ativo', $cartorio->ativo);
 
         if ($stmt->execute()) {
             return true;
@@ -72,56 +92,34 @@ class Cartorio
     /**
      * Altera no banco de dados um usuário
      */
-    public static function update($id, $name, $email, $gender, $birthdate)
+    public static function update($id, $cartorio)
     {
-        // validação (bem simples, só pra evitar dados vazios)
-        if (empty($name) || empty($email) || empty($gender) || empty($birthdate)) {
-            echo "Volte e preencha todos os campos";
-            return false;
-        }
-
-        // a data vem no formato dd/mm/YYYY
-        // então precisamos converter para YYYY-mm-dd
-        $isoDate = dateConvert($birthdate);
-
         // insere no banco
         $DB = new DB;
-        $sql = "UPDATE users SET name = :name, email = :email, gender = :gender, birthdate = :birthdate WHERE id = :id";
+        $sql = "UPDATE cartorios 
+                SET nome = :nome, razao = :razao, tipo_documento = :tipo_documento, documento = :documento, cep = :cep,
+                    endereco = :endereco, bairro = :bairro, cidade = :cidade, uf = :uf, telefone = :telefone, email = :email, tabeliao = :tabeliao, ativo = :ativo
+                WHERE id = :id";
         $stmt = $DB->prepare($sql);
-        $stmt->bindParam(':name', $name);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':gender', $gender);
-        $stmt->bindParam(':birthdate', $isoDate);
-        $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
+        $stmt->bindParam(':nome', $cartorio->nome);
+        $stmt->bindParam(':razao', $cartorio->razao);
+        $stmt->bindParam(':tipo_documento', $cartorio->tipo_documento);
+        $stmt->bindParam(':documento', $cartorio->documento);
+        $stmt->bindParam(':cep', $cartorio->cep);
+        $stmt->bindParam(':endereco', $cartorio->endereco);
+        $stmt->bindParam(':bairro', $cartorio->bairro);
+        $stmt->bindParam(':cidade', $cartorio->cidade);
+        $stmt->bindParam(':uf', $cartorio->uf);
+        $stmt->bindParam(':telefone', $cartorio->telefone);
+        $stmt->bindParam(':email', $cartorio->email);
+        $stmt->bindParam(':tabeliao', $cartorio->tabeliao);
+        $stmt->bindParam(':ativo', $cartorio->ativo);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
         if ($stmt->execute()) {
             return true;
         } else {
             echo "Erro ao cadastrar";
-            print_r($stmt->errorInfo());
-            return false;
-        }
-    }
-
-
-    public static function remove($id)
-    {
-        // valida o ID
-        if (empty($id)) {
-            echo "ID não informado";
-            exit;
-        }
-
-        // remove do banco
-        $DB = new DB;
-        $sql = "DELETE FROM users WHERE id = :id";
-        $stmt = $DB->prepare($sql);
-        $stmt->bindParam(':id', $id, \PDO::PARAM_INT);
-
-        if ($stmt->execute()) {
-            return true;
-        } else {
-            echo "Erro ao remover";
             print_r($stmt->errorInfo());
             return false;
         }

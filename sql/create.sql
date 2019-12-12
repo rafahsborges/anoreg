@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `cartorios` (
 	`bairro` VARCHAR(255) NOT NULL,
 	`cidade` VARCHAR(255) NOT NULL,
 	`uf` VARCHAR(2) NOT NULL,
-	`telefone` INT(11),
+	`telefone` VARCHAR(255),
 	`email` VARCHAR(255),
 	`tabeliao` VARCHAR(255),
 	`ativo` BOOLEAN,

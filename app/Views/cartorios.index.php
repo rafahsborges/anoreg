@@ -1,72 +1,83 @@
-<h1>Listagem de Cartórios</h1>
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron">
+    <div class="container">
+        <h1 class="display-3">Listagem de Cartórios</h1>
+    </div>
+</div>
 
-<a href="/add">Adicionar Usuário</a>
+<div class="container">
+    <!-- Example row of columns -->
+    <div class="row">
+        <div class="col-md-12">
 
-<?php if (count($cartorios) > 0): ?>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover table-sm">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Razão</th>
+                        <th scope="col">Tipo Documento</th>
+                        <th scope="col">Documento</th>
+                        <th scope="col">CEP</th>
+                        <th scope="col">Endereço</th>
+                        <th scope="col">Bairro</th>
+                        <th scope="col">Cidade</th>
+                        <th scope="col">UF</th>
+                        <th scope="col">Telefone</th>
+                        <th scope="col">E-mail</th>
+                        <th scope="col">Tabelião</th>
+                        <th scope="col">Ativo</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                    </thead>
 
-    <table width="50%" border="1" cellpadding="2" cellspacing="0">
+                    <tbody>
 
-        <thead>
+                    <?php if (count($cartorios) > 0): ?>
 
-        <tr>
+                        <?php foreach ($cartorios as $cartorio): ?>
 
-            <th>Nome</th>
+                            <tr>
+                                <th scope="row"><?php echo $cartorio['id']; ?></th>
+                                <td><?php echo $cartorio['nome']; ?></td>
+                                <td><?php echo $cartorio['razao']; ?></td>
+                                <td><?php echo $cartorio['tipo_documento'] === '1' ? 'CPF' : 'CNPJ'; ?></td>
+                                <td><?php echo $cartorio['documento']; ?></td>
+                                <td><?php echo $cartorio['cep']; ?></td>
+                                <td><?php echo $cartorio['endereco']; ?></td>
+                                <td><?php echo $cartorio['bairro']; ?></td>
+                                <td><?php echo $cartorio['cidade']; ?></td>
+                                <td><?php echo $cartorio['uf']; ?></td>
+                                <td><?php echo $cartorio['telefone']; ?></td>
+                                <td><?php echo $cartorio['email']; ?></td>
+                                <td><?php echo $cartorio['tabeliao']; ?></td>
+                                <td><?php echo $cartorio['ativo'] === '1' ? 'Sim' : 'Não'; ?></td>
+                                <td>
+                                    <a href="/edit/<?php echo $cartorio['id']; ?>">Editar</a>
+                                    <a href="/remove/<?php echo $cartorio['id']; ?>"
+                                       onclick="return confirm('Tem certeza de que deseja remover?');">Remover</a>
+                                </td>
+                            </tr>
 
+                        <?php endforeach; ?>
 
-            <th>Email</th>
+                    <?php else: ?>
 
+                        <tr>
+                            <td colspan="15">Nenhum cartório cadastrado</td>
+                        </tr>
 
-            <th>Gênero</th>
+                    <?php endif; ?>
+                    </tbody>
 
+                </table>
+            </div>
 
-            <th>Nascimento</th>
+        </div>
+    </div>
 
+    <hr>
 
-            <th>Idade</th>
+</div> <!-- /container -->
 
-
-            <th>Ações</th>
-
-        </tr>
-
-        </thead>
-
-
-        <tbody>
-        <?php foreach ($cartorios as $cartorio): ?>
-
-            <tr>
-
-                <td><?php echo $cartorio['name']; ?></td>
-
-
-                <td><?php echo $cartorio['email']; ?></td>
-
-
-                <td><?php echo $cartorio['gender'] == 'm' ? 'Masculino' : 'Feminino'; ?></td>
-
-
-                <td><?php echo dateConvert($cartorio['birthdate']); ?></td>
-
-
-                <td><?php echo calculateAge($cartorio['birthdate']); ?> anos</td>
-
-
-                <td>
-                    <a href="/edit/<?php echo $cartorio['id']; ?>">Editar</a>
-                    <a href="/remove/<?php echo $cartorio['id']; ?>"
-                       onclick="return confirm('Tem certeza de que deseja remover?');">Remover</a>
-                </td>
-
-            </tr>
-
-        <?php endforeach; ?>
-        </tbody>
-
-    </table>
-
-<?php else: ?>
-
-    Nenhum usuário cadastrado
-
-<?php endif; ?>

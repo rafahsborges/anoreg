@@ -120,20 +120,39 @@ class CartoriosController
         $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
         $filePath = $directory . DIRECTORY_SEPARATOR . $filename;
 
-        $xmlImport = $this->xmlImport($filePath);
+        $xmlImport = $this->xmlDataStore($filePath);
 
         die();
 
         return $filename;
     }
 
-    function xmlImport($filePath) {
+    function xmlDataStore($filePath)
+    {
         $affectedRow = 0;
-
         $xml = simplexml_load_file($filePath) or die("Error: Cannot create object");
 
         foreach ($xml->children() as $row) {
-            var_dump($row);
+            $cartorio = Cartorio::getByDoc($row->documento);
+            if (empty($cartorio)) {
+                $result = Cartorio::save($row);
+            } else {
+                $result = Cartorio::update($cartorio['id'], $row);
+            }
+
+            if (!empty($result)) {
+                $affectedRow++;
+            } else {
+                $error_message = mysqli_error($conn) . "\n";
+            }
+        }
+
+        if ($affectedRow > 0) {
+            header('Location: /');
+            exit;
+        } else {
+            $message = "No records inserted";
         }
     }
+
 }
