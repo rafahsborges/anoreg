@@ -66,10 +66,10 @@ class CartoriosController
      */
     public function edit($id)
     {
-        $cartorios = Cartorio::selectAll($id)[0];
+        $cartorio = Cartorio::selectAll($id)[0];
 
         View::make('cartorios.edit', [
-            'cartorios' => $cartorios,
+            'cartorio' => $cartorio,
         ]);
     }
 
