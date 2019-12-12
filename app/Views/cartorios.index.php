@@ -34,7 +34,8 @@
 
                     <tbody>
 
-                    <?php if (count($cartorios) > 0): ?>
+                    <?php /** @var array $cartorios */
+                    if (count($cartorios) > 0): ?>
 
                         <?php foreach ($cartorios as $cartorio): ?>
 
