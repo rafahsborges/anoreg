@@ -30,11 +30,11 @@
                 </div>
                 <div class="form-group">
                     <label for="documento">Documento</label>
-                    <input id="documento" name="documento" type="text" class="form-control" required="required">
+                    <input id="documento" name="documento" type="text" class="form-control documento" required="required">
                 </div>
                 <div class="form-group">
                     <label for="cep">CEP</label>
-                    <input id="cep" name="cep" type="text" class="form-control" required="required">
+                    <input id="cep" name="cep" type="text" class="form-control cep" required="required">
                 </div>
                 <div class="form-group">
                     <label for="endereco">Endereço</label>
@@ -84,7 +84,7 @@
                 </div>
                 <div class="form-group">
                     <label for="telefone">Telefone</label>
-                    <input id="telefone" name="telefone" type="text" class="form-control">
+                    <input id="telefone" name="telefone" type="text" class="form-control telefone">
                 </div>
                 <div class="form-group">
                     <label for="email">E-mail</label>

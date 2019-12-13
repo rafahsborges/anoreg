@@ -7,11 +7,26 @@ use PDO;
 
 class Cartorio
 {
+    private $id;
+    private $nome;
+    private $razao;
+    private $tipo_documento;
+    private $documento;
+    private $cep;
+    private $endereco;
+    private $bairro;
+    private $cidade;
+    private $uf;
+    private $telefone;
+    private $email;
+    private $tabeliao;
+    private $ativo;
+
     /**
      * Busca cartórios *
      * Se o ID não for passado, busca todos. Caso contrário, filtra pelo ID especificado.
      */
-    public static function selectAll($id = null)
+    public static function list($id = null)
     {
         $where = '';
         if (!empty($id)) {
@@ -19,7 +34,7 @@ class Cartorio
         }
         $sql = sprintf("SELECT id, nome, razao, tipo_documento, documento, cep, endereco, bairro, cidade, uf, telefone, email, tabeliao, ativo
             FROM cartorios %s 
-            ORDER BY nome ASC", $where);
+            ORDER BY id DESC", $where);
         $DB = new DB;
         $stmt = $DB->prepare($sql);
 
@@ -29,9 +44,7 @@ class Cartorio
 
         $stmt->execute();
 
-        $cartorios = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        return $cartorios;
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
     /**
@@ -123,5 +136,229 @@ class Cartorio
             print_r($stmt->errorInfo());
             return false;
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNome()
+    {
+        return $this->nome;
+    }
+
+    /**
+     * @param mixed $nome
+     */
+    public function setNome($nome)
+    {
+        $this->nome = $nome;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRazao()
+    {
+        return $this->razao;
+    }
+
+    /**
+     * @param mixed $razao
+     */
+    public function setRazao($razao)
+    {
+        $this->razao = $razao;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTipoDocumento()
+    {
+        return $this->tipo_documento;
+    }
+
+    /**
+     * @param mixed $tipo_documento
+     */
+    public function setTipoDocumento($tipo_documento)
+    {
+        $this->tipo_documento = $tipo_documento;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDocumento()
+    {
+        return $this->documento;
+    }
+
+    /**
+     * @param mixed $documento
+     */
+    public function setDocumento($documento)
+    {
+        $this->documento = $documento;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCep()
+    {
+        return $this->cep;
+    }
+
+    /**
+     * @param mixed $cep
+     */
+    public function setCep($cep)
+    {
+        $this->cep = $cep;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEndereco()
+    {
+        return $this->endereco;
+    }
+
+    /**
+     * @param mixed $endereco
+     */
+    public function setEndereco($endereco)
+    {
+        $this->endereco = $endereco;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBairro()
+    {
+        return $this->bairro;
+    }
+
+    /**
+     * @param mixed $bairro
+     */
+    public function setBairro($bairro)
+    {
+        $this->bairro = $bairro;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCidade()
+    {
+        return $this->cidade;
+    }
+
+    /**
+     * @param mixed $cidade
+     */
+    public function setCidade($cidade)
+    {
+        $this->cidade = $cidade;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUf()
+    {
+        return $this->uf;
+    }
+
+    /**
+     * @param mixed $uf
+     */
+    public function setUf($uf)
+    {
+        $this->uf = $uf;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTelefone()
+    {
+        return $this->telefone;
+    }
+
+    /**
+     * @param mixed $telefone
+     */
+    public function setTelefone($telefone)
+    {
+        $this->telefone = $telefone;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTabeliao()
+    {
+        return $this->tabeliao;
+    }
+
+    /**
+     * @param mixed $tabeliao
+     */
+    public function setTabeliao($tabeliao)
+    {
+        $this->tabeliao = $tabeliao;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAtivo()
+    {
+        return $this->ativo;
+    }
+
+    /**
+     * @param mixed $ativo
+     */
+    public function setAtivo($ativo)
+    {
+        $this->ativo = $ativo;
     }
 }

@@ -4,15 +4,16 @@ use App\Models\Cartorio;
 use App\View;
 use Exception;
 use Slim\Http\UploadedFile;
+use stdClass;
 
 class CartoriosController
 {
     /** * Listagem de cartórios */
     public function index()
     {
-        $cartorios = Cartorio::selectAll();
-        View::make('cartorios.index', ['cartorios' => $cartorios,
-        ]);
+        $cartorio = new Cartorio();
+        $cartorios = $cartorio->list();
+        View::make('cartorios.index', ['cartorios' => $cartorios]);
     }
 
     /**
@@ -49,13 +50,22 @@ class CartoriosController
      */
     public function store()
     {
-        // pega os dados do formuário
-        $name = isset($_POST['name']) ? $_POST['name'] : null;
-        $email = isset($_POST['email']) ? $_POST['email'] : null;
-        $gender = isset($_POST['gender']) ? $_POST['gender'] : null;
-        $birthdate = isset($_POST['birthdate']) ? $_POST['birthdate'] : null;
+        $cartorio = new stdClass();
+        $cartorio->nome = isset($_POST['nome']) ? $_POST['nome'] : null;
+        $cartorio->razao = isset($_POST['razao']) ? $_POST['razao'] : null;
+        $cartorio->tipo_documento = isset($_POST['tipo_documento']) ? $_POST['tipo_documento'] : null;
+        $cartorio->documento = isset($_POST['documento']) ? preg_replace('/\D/', '', $_POST['documento']) : null;
+        $cartorio->cep = isset($_POST['cep']) ? preg_replace('/\D/', '', $_POST['cep']) : null;
+        $cartorio->endereco = isset($_POST['endereco']) ? $_POST['endereco'] : null;
+        $cartorio->bairro = isset($_POST['bairro']) ? $_POST['bairro'] : null;
+        $cartorio->cidade = isset($_POST['cidade']) ? $_POST['cidade'] : null;
+        $cartorio->uf = isset($_POST['uf']) ? $_POST['uf'] : null;
+        $cartorio->telefone = isset($_POST['telefone']) ? preg_replace('/\D/', '', $_POST['telefone']) : null;
+        $cartorio->email = isset($_POST['email']) ? $_POST['email'] : null;
+        $cartorio->tabeliao = isset($_POST['tabeliao']) ? $_POST['tabeliao'] : null;
+        $cartorio->ativo = isset($_POST['ativo']) ? $_POST['ativo'] : null;
 
-        if (Cartorio::save($name, $email, $gender, $birthdate)) {
+        if (Cartorio::save($cartorio)) {
             header('Location: /');
             exit;
         }
@@ -66,7 +76,7 @@ class CartoriosController
      */
     public function edit($id)
     {
-        $cartorio = Cartorio::selectAll($id)[0];
+        $cartorio = Cartorio::list($id)[0];
 
         View::make('cartorios.edit', [
             'cartorio' => $cartorio,
@@ -80,12 +90,22 @@ class CartoriosController
     {
         // pega os dados do formuário
         $id = $_POST['id'];
-        $name = isset($_POST['name']) ? $_POST['name'] : null;
-        $email = isset($_POST['email']) ? $_POST['email'] : null;
-        $gender = isset($_POST['gender']) ? $_POST['gender'] : null;
-        $birthdate = isset($_POST['birthdate']) ? $_POST['birthdate'] : null;
+        $cartorio = new stdClass();
+        $cartorio->nome = isset($_POST['nome']) ? $_POST['nome'] : null;
+        $cartorio->razao = isset($_POST['razao']) ? $_POST['razao'] : null;
+        $cartorio->tipo_documento = isset($_POST['tipo_documento']) ? $_POST['tipo_documento'] : null;
+        $cartorio->documento = isset($_POST['documento']) ? preg_replace('/\D/', '', $_POST['documento']) : null;
+        $cartorio->cep = isset($_POST['cep']) ? preg_replace('/\D/', '', $_POST['cep']) : null;
+        $cartorio->endereco = isset($_POST['endereco']) ? $_POST['endereco'] : null;
+        $cartorio->bairro = isset($_POST['bairro']) ? $_POST['bairro'] : null;
+        $cartorio->cidade = isset($_POST['cidade']) ? $_POST['cidade'] : null;
+        $cartorio->uf = isset($_POST['uf']) ? $_POST['uf'] : null;
+        $cartorio->telefone = isset($_POST['telefone']) ? preg_replace('/\D/', '', $_POST['telefone']) : null;
+        $cartorio->email = isset($_POST['email']) ? $_POST['email'] : null;
+        $cartorio->tabeliao = isset($_POST['tabeliao']) ? $_POST['tabeliao'] : null;
+        $cartorio->ativo = isset($_POST['ativo']) ? $_POST['ativo'] : null;
 
-        if (Cartorio::update($id, $name, $email, $gender, $birthdate)) {
+        if (Cartorio::update($id, $cartorio)) {
             header('Location: /');
             exit;
         }

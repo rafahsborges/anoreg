@@ -40,22 +40,22 @@
                         <?php foreach ($cartorios as $cartorio): ?>
 
                             <tr>
-                                <th scope="row"><?php echo $cartorio['id']; ?></th>
-                                <td><?php echo $cartorio['nome']; ?></td>
-                                <td><?php echo $cartorio['razao']; ?></td>
-                                <td><?php echo $cartorio['tipo_documento'] === '1' ? 'CPF' : 'CNPJ'; ?></td>
-                                <td><?php echo $cartorio['documento']; ?></td>
-                                <td><?php echo $cartorio['cep']; ?></td>
-                                <td><?php echo $cartorio['endereco']; ?></td>
-                                <td><?php echo $cartorio['bairro']; ?></td>
-                                <td><?php echo $cartorio['cidade']; ?></td>
-                                <td><?php echo $cartorio['uf']; ?></td>
-                                <td><?php echo $cartorio['telefone']; ?></td>
-                                <td><?php echo $cartorio['email']; ?></td>
-                                <td><?php echo $cartorio['tabeliao']; ?></td>
-                                <td><?php echo $cartorio['ativo'] === '1' ? 'Sim' : 'Não'; ?></td>
+                                <th scope="row"><a href="/editar/<?php echo $cartorio->id; ?>"><?php echo $cartorio->id; ?></a></th>
+                                <td><?php echo $cartorio->nome; ?></td>
+                                <td><?php echo $cartorio->razao; ?></td>
+                                <td><?php echo $cartorio->tipo_documento === '1' ? 'CPF' : 'CNPJ'; ?></td>
+                                <td><?php echo $cartorio->documento; ?></td>
+                                <td><?php echo $cartorio->cep; ?></td>
+                                <td><?php echo $cartorio->endereco; ?></td>
+                                <td><?php echo $cartorio->bairro; ?></td>
+                                <td><?php echo $cartorio->cidade; ?></td>
+                                <td><?php echo $cartorio->uf; ?></td>
+                                <td><?php echo $cartorio->telefone; ?></td>
+                                <td><?php echo $cartorio->email; ?></td>
+                                <td><?php echo $cartorio->tabeliao; ?></td>
+                                <td><?php echo $cartorio->ativo === '1' ? 'Sim' : 'Não'; ?></td>
                                 <td>
-                                    <a href="/editar/<?php echo $cartorio['id']; ?>">Editar</a>
+                                    <a href="/editar/<?php echo $cartorio->id; ?>">Editar</a>
                                 </td>
                             </tr>
 
