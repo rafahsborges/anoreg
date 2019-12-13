@@ -25,22 +25,33 @@ class Cartorio
     /**
      * Busca cartórios *
      * Se o ID não for passado, busca todos. Caso contrário, filtra pelo ID especificado.
+     * @param null $id
+     * @param int $page
+     * @param int $limit
+     * @return array
      */
-    public static function list($id = null)
+    public static function list($id = null, $page = 1, $limit = 10)
     {
+        $start = $page * $limit;
+
         $where = '';
         if (!empty($id)) {
             $where = 'WHERE id = :id';
         }
+
         $sql = sprintf("SELECT id, nome, razao, tipo_documento, documento, cep, endereco, bairro, cidade, uf, telefone, email, tabeliao, ativo
             FROM cartorios %s 
-            ORDER BY id DESC", $where);
+            ORDER BY id DESC
+            LIMIT :start, :limit", $where);
         $DB = new DB;
         $stmt = $DB->prepare($sql);
 
         if (!empty($where)) {
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         }
+
+        $stmt->bindParam(':start', $start, PDO::PARAM_INT);
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
 
         $stmt->execute();
 
