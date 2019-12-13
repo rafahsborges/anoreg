@@ -30,7 +30,7 @@ class Cartorio
      * @param int $limit
      * @return array
      */
-    public static function list($id = null, $page = 1, $limit = 10)
+    public static function list($id = null, $page = 1, $limit = 5)
     {
         $start = $page * $limit;
 
