@@ -32,6 +32,22 @@ class Cartorio
      */
     public static function list($id = null, $page = 1, $limit = 5)
     {
+        if (isset($_GET['page']) && $_GET['page'] != "") {
+            $page = $_GET['page'];
+        }
+
+        if (isset($_GET['limit']) && $_GET['limit'] != "") {
+            $limit = $_GET['limit'];
+        }
+
+        $adjacents = 2;
+        $sql = sprintf("SELECT * FROM cartorios");
+        $DB = new DB;
+        $stmt = $DB->prepare($sql);
+        $stmt->execute();
+
+        $total_rows = count($stmt->fetchAll(PDO::FETCH_OBJ));
+
         $start = $page * $limit;
 
         $where = '';
@@ -55,7 +71,35 @@ class Cartorio
 
         $stmt->execute();
 
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
+        $cartorios['cartorios'] = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+        $total_pages = ceil($total_rows / $limit);
+
+        //Here we generates the range of the page numbers which will display.
+        if ($total_pages <= (1 + ($adjacents * 2))) {
+            $start = 1;
+            $end = $total_pages;
+        } else {
+            if (($page - $adjacents) > 1) {
+                if (($page + $adjacents) < $total_pages) {
+                    $start = ($page - $adjacents);
+                    $end = ($page + $adjacents);
+                } else {
+                    $start = ($total_pages - (1 + ($adjacents * 2)));
+                    $end = $total_pages;
+                }
+            } else {
+                $start = 1;
+                $end = (1 + ($adjacents * 2));
+            }
+        }
+
+        $cartorios['pages'] = $total_pages;
+        $cartorios['page'] = $page;
+        $cartorios['start'] = $start;
+        $cartorios['end'] = $end;
+
+        return $cartorios;
     }
 
     /**

@@ -34,6 +34,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="/adicionar">Adicionar</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/email">E-mail</a>
+            </li>
         </ul>
     </div>
 </nav>
