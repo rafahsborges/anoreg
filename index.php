@@ -79,5 +79,19 @@ $app->post('/importar', function(Request $request)
     $CartoriosController->storeXML($directory, $uploadedFiles);
 });
 
+// listagem de emails
+$app->get('/emails', function ()
+{
+    $CartoriosController = new CartoriosController();
+    $CartoriosController->emails();
+});
+
+// processa o formulário de edição
+$app->post('/emails', function ()
+{
+    $CartoriosController = new CartoriosController();
+    $CartoriosController->sendEmails();
+});
+
 // Run app
 $app->run();

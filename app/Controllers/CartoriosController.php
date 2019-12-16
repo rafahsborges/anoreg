@@ -76,7 +76,7 @@ class CartoriosController
      */
     public function edit($id)
     {
-        $cartorio = Cartorio::list($id)[0];
+        $cartorio = Cartorio::list($id)['cartorios'];
 
         View::make('cartorios.edit', [
             'cartorio' => $cartorio,
@@ -164,6 +164,29 @@ class CartoriosController
         } else {
             return false;
         }
+    }
+
+    /** * Listagem de cartórios */
+    public function emails()
+    {
+        $cartorio = new Cartorio();
+        $cartorios = $cartorio->list();
+        View::make('cartorios.emails', ['cartorios' => $cartorios]);
+    }
+
+    /**
+     * Processa o formulário de edição de usuário
+     */
+    public function sendEmails()
+    {
+        $email = new stdClass();
+        $email->remetente = isset($_POST['remetente']) ? $_POST['remetente'] : null;
+        $email->assunto = isset($_POST['assunto']) ? $_POST['assunto'] : null;
+        $email->mensagem = isset($_POST['mensagem']) ? $_POST['mensagem'] : null;
+        $email->destinatario = isset($_POST['destinatario']) ? $_POST['destinatario'] : null;
+
+        var_dump($email);
+        die();
     }
 
 }

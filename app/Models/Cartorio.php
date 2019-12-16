@@ -55,49 +55,56 @@ class Cartorio
             $where = 'WHERE id = :id';
         }
 
-        $sql = sprintf("SELECT id, nome, razao, tipo_documento, documento, cep, endereco, bairro, cidade, uf, telefone, email, tabeliao, ativo
+        $sql = sprintf("SELECT *
             FROM cartorios %s 
-            ORDER BY id DESC
-            LIMIT :start, :limit", $where);
+            ORDER BY id DESC", $where);
+
+        if (empty($where)) {
+            $sql .= ' LIMIT :start, :limit';
+        }
+
         $DB = new DB;
         $stmt = $DB->prepare($sql);
 
         if (!empty($where)) {
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        } else {
+            $stmt->bindParam(':start', $start, PDO::PARAM_INT);
+            $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
         }
-
-        $stmt->bindParam(':start', $start, PDO::PARAM_INT);
-        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
 
         $stmt->execute();
 
-        $cartorios['cartorios'] = $stmt->fetchAll(PDO::FETCH_OBJ);
-
-        $total_pages = ceil($total_rows / $limit);
-
-        //Here we generates the range of the page numbers which will display.
-        if ($total_pages <= (1 + ($adjacents * 2))) {
-            $start = 1;
-            $end = $total_pages;
+        if (!empty($where)) {
+            $cartorios['cartorios'] = $stmt->fetch(PDO::FETCH_OBJ);
         } else {
-            if (($page - $adjacents) > 1) {
-                if (($page + $adjacents) < $total_pages) {
-                    $start = ($page - $adjacents);
-                    $end = ($page + $adjacents);
-                } else {
-                    $start = ($total_pages - (1 + ($adjacents * 2)));
-                    $end = $total_pages;
-                }
-            } else {
-                $start = 1;
-                $end = (1 + ($adjacents * 2));
-            }
-        }
+            $cartorios['cartorios'] = $stmt->fetchAll(PDO::FETCH_OBJ);
+            $total_pages = ceil($total_rows / $limit);
 
-        $cartorios['pages'] = $total_pages;
-        $cartorios['page'] = $page;
-        $cartorios['start'] = $start;
-        $cartorios['end'] = $end;
+            //Here we generates the range of the page numbers which will display.
+            if ($total_pages <= (1 + ($adjacents * 2))) {
+                $start = 1;
+                $end = $total_pages;
+            } else {
+                if (($page - $adjacents) > 1) {
+                    if (($page + $adjacents) < $total_pages) {
+                        $start = ($page - $adjacents);
+                        $end = ($page + $adjacents);
+                    } else {
+                        $start = ($total_pages - (1 + ($adjacents * 2)));
+                        $end = $total_pages;
+                    }
+                } else {
+                    $start = 1;
+                    $end = (1 + ($adjacents * 2));
+                }
+            }
+
+            $cartorios['pages'] = $total_pages;
+            $cartorios['page'] = $page;
+            $cartorios['start'] = $start;
+            $cartorios['end'] = $end;
+        }
 
         return $cartorios;
     }
