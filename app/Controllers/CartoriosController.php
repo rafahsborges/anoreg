@@ -185,8 +185,10 @@ class CartoriosController
         $email->mensagem = isset($_POST['mensagem']) ? $_POST['mensagem'] : null;
         $email->destinatario = isset($_POST['destinatario']) ? $_POST['destinatario'] : null;
 
-        var_dump($email);
-        die();
+        if (Cartorio::sendEmail($email)) {
+            header('Location: /');
+            exit;
+        }
     }
 
 }

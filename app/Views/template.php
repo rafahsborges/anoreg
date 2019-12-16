@@ -41,6 +41,16 @@
     </div>
 </nav>
 
+<?php if (isset($GLOBALS['message'])) : ?>
+
+    <div class="alert alert-<?php echo $GLOBALS['type']; ?> alert-dismissible fade show" role="alert">
+        <?php echo $GLOBALS['message']; ?>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+<?php endif; ?>
 
 <main role="main">
 
