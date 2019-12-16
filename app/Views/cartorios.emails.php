@@ -1,7 +1,7 @@
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">
     <div class="container">
-        <h1 class="display-3">Listagem de Cartórios</h1>
+        <h1 class="display-3">Enviar E-mails</h1>
     </div>
 </div>
 
@@ -15,6 +15,10 @@
                 <div class="form-group">
                     <label for="remetente">Remetente</label>
                     <input id="remetente" name="remetente" type="text" required="required" class="form-control">
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="todos" value="all">
+                    <label class="form-check-label" for="todos">Selecionar Todos</label>
                 </div>
                 <div class="form-group">
                     <label for="destinatario">Destinatário</label>

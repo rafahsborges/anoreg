@@ -77,5 +77,15 @@
 <script src="/assets/js/jquery.mask.js"></script>
 <script src="/assets/js/scripts.js"></script>
 
+<script>
+    $('#todos').click(function () {
+        if ($(this).is(':checked')) {
+            $('#destinatario option').prop('selected', true);
+        } else {
+            $('#destinatario option').prop('selected', false);
+        }
+    });
+</script>
+
 </body>
 </html>
